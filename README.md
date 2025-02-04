@@ -10,6 +10,7 @@ A full-stack contacts management system built with Django REST Framework (backen
 
   - List all contacts with search functionality
   - Add new contacts
+  - View existing contacts
   - Edit existing contacts
   - Delete contacts with confirmation
   - Responsive design with Bootstrap
