@@ -1,6 +1,6 @@
 import * as React from "react";
 import Background from "./Background";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { deleteContact, getContactById } from "../services/api";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { GiPencil } from "react-icons/gi";
 import { IoTrashBin } from "react-icons/io5";
 function ViewContact() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [contact, setContact] = useState<Contact | null>(null);
   useEffect(() => {
     if (id) {
@@ -37,8 +38,7 @@ function ViewContact() {
   const handleDelete = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this contact?")) {
       await deleteContact(id);
-      window.location.href = "/";
-      //   loadContacts();
+      navigate("/");
     }
   };
   return (

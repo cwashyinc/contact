@@ -13,24 +13,42 @@ import { RiContactsBookFill } from "react-icons/ri";
 const ContactList = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Debounced search term
+  const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(searchTerm), 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     loadContacts();
   }, []);
 
   const loadContacts = async () => {
-    try {
+    try { 
+      setIsLoading(true);
+      setError(null);
       const data = await fetchContacts();
       setContacts(data);
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
       console.error("Failed to load contacts:", error);
-      alert(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-
-  const filteredContacts: Contact[] = contacts?.filter((contact: Contact) =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Memoize filtered contacts to prevent unnecessary recalculations
+  const filteredContacts = React.useMemo(() => 
+    contacts?.filter((contact: Contact) =>
+      contact.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+    ),
+    [contacts, debouncedSearch]
   );
 
   const emptyList = () => {
@@ -50,6 +68,32 @@ const ContactList = () => {
       </div>
     );
   };
+
+  if (isLoading) {
+    return <Background>
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </Background>;
+  }
+
+  if (error) {
+    return (
+      <Background>
+        <div className="alert alert-danger" role="alert">
+          {error}
+          <button 
+            className="btn btn-link" 
+            onClick={loadContacts}
+          >
+            Try again
+          </button>
+        </div>
+      </Background>
+    );
+  }
 
   return (
     <Background>
