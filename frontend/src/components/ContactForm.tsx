@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { createContact, updateContact, fetchContacts } from '../services/api';
 import { Contact } from '../types/types';
-import styles from "./styles/contactlist.module.css";
+import styles from "./styles/background.module.css";
 
 const ContactForm = () => {
   const navigate = useNavigate();
