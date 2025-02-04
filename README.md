@@ -164,9 +164,5 @@ ALLOWED_HOSTS=yourdomain.com
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## Contact
 
-Similoluwa Odeyemi - similoluwaodeyemi@gmail.com
-
-Project Link: [https://github.com/cwashyinc/contact](https://github.com/cwashyinc/contact)
 
