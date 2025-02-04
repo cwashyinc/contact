@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'contacts.apps.ContactsConfig',  # Add this line
     'rest_framework',  # Add this if using DRF
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

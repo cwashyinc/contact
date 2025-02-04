@@ -114,7 +114,7 @@ npm start
 
 1. **Backend**: http://localhost:8000
 
-   - API Docs: http://localhost:8000/api/
+   - API Docs: http://localhost:8000/api/docs/
    - Admin: http://localhost:8000/admin/
 
 2. **Frontend**: http://localhost:3000

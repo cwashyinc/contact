@@ -12,12 +12,20 @@ class ContactViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def api_contact_list(request):
+    """
+    get:
+    Return a list of all contacts.
+    """
     contacts = Contact.objects.all()
     serializer = ContactSerializer(contacts, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def contact_detail(request, pk):
+    """
+    get:
+    Return a single contact by ID.
+    """
     try:
         contact = Contact.objects.get(pk=pk)
         serializer = ContactSerializer(contact)
@@ -27,6 +35,10 @@ def contact_detail(request, pk):
 
 @api_view(['POST'])
 def api_create_contact(request):
+    """
+    post:
+    Create a new contact.
+    """
     serializer = ContactSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
