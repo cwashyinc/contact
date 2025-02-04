@@ -46,7 +46,7 @@ const ContactList = () => {
     return (
       <div className="d-flex flex-column align-items-center justify-content-center">
         <Lottie options={defaultOptions} style={{ width: 500, height: 500 }} />
-        <h2>No contacts found</h2>
+        <h2 className="text-white">No contacts found</h2>
       </div>
     );
   };
