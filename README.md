@@ -4,7 +4,7 @@
 
 A full-stack contacts management system built with Django REST Framework (backend) and React (frontend).
 
-![alt text](https://github.com/cwashyinc/contact-priv/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/cwashyinc/contact-priv/blob/main/frontend/screenshot.png)
 
 
 ## Features
