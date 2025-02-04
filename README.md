@@ -1,5 +1,4 @@
 
-```markdown
 # Contacts Application
 
 A full-stack contacts management system built with Django REST Framework (backend) and React (frontend).
