@@ -108,13 +108,21 @@ npm start
 
 ## API Endpoints
 
-| Method | URL                  | Description               |
-|--------|----------------------|---------------------------|
-| GET    | /api/contacts/       | List all contacts         |
-| POST   | /api/contacts/       | Create new contact        |
-| GET    | /api/contacts/{id}/  | Get single contact        |
-| PUT    | /api/contacts/{id}/  | Update contact            |
-| DELETE | /api/contacts/{id}/  | Delete contact            |
+| Method | URL                  | Description               |Body
+|--------|----------------------|---------------------------|----------------|
+| GET    | /api/contacts/       | List all contacts         |                |
+| POST   | /api/contacts/       | Create new contact        | {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890"
+}                     |
+| GET    | /api/contacts/{id}/  | Get single contact        |                |
+| PUT    | /api/contacts/{id}/  | Update contact            | {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890"
+}                 |
+| DELETE | /api/contacts/{id}/  | Delete contact            |                |
 
 ## Environment Variables
 
