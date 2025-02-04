@@ -61,32 +61,31 @@ cd contact
 cd backend
 ```
 
-# Create virtual environment
+### Create virtual environment
 
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-# Install dependencies
+### Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-# Run migrations
+### Run migrations
 
 ```bash
 python manage.py migrate
 ```
 
-# Create superuser
+### Create superuser
 
 ```bash
 python manage.py createsuperuser
 ```
 
-Here's how to update your `README.md` to include testing instructions:
 
 ---
 
@@ -114,37 +113,6 @@ coverage report
 coverage html
 ```
 
-#### **Writing Tests**
-Tests are located in the `contacts/tests/` directory. Follow these guidelines:
-1. **Unit Tests**: Test individual components (models, serializers)
-2. **Integration Tests**: Test API endpoints and views
-3. **End-to-End Tests**: Test complete workflows
-
-#### **Example Test Structure**
-```
-contacts/
-├── tests/
-│   ├── __init__.py
-│   ├── test_models.py       # Model tests
-│   ├── test_views.py        # View tests
-│   └── test_serializers.py  # Serializer tests
-```
-
-#### **Running Specific Tests**
-```bash
-# Run model tests
-python manage.py test contacts.tests.test_models
-
-# Run view tests
-python manage.py test contacts.tests.test_views
-
-# Run a specific test case
-python manage.py test contacts.tests.test_views.ContactAPITest
-```
-
-#### **Test Coverage Goal**
-- Aim for **80-90% coverage**
-- Focus on critical paths and edge cases
 
 ---
 
