@@ -1,5 +1,5 @@
 import { Contact } from "../types/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GiPencil } from "react-icons/gi";
 import { IoTrashBin } from "react-icons/io5";
 import React from "react";
@@ -7,6 +7,8 @@ import { deleteContact } from "../services/api";
 import styles from "./styles/contactform.module.css";
 
 const RenderPerson = (contact: Contact) => {
+  const navigate = useNavigate();
+
   const handleDelete = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this contact?")) {
       await deleteContact(id);
@@ -14,8 +16,13 @@ const RenderPerson = (contact: Contact) => {
     //   loadContacts();
     }
   };
+
+  const handleEdit = (id: number) => {
+    navigate(`/edit/${id}`);
+  };
+
   return (
-    <Link to={`/view/${contact.id}`} className={`col-md-4 mb-4 ${styles.pressable}`} key={contact.id}>
+    <div onClick={() => handleEdit(contact.id)} className={`col-md-4 mb-4 ${styles.pressable}`} key={contact.id}>
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">{contact.name}</h5>
@@ -38,7 +45,7 @@ const RenderPerson = (contact: Contact) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
