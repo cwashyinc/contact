@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Background from "./Background";
 import { Link } from "react-router-dom";
 import { fetchContacts } from "../services/api";
 import FlatList from "flatlist-react";
@@ -6,7 +7,6 @@ import EmptyAnimation from "../assets/empty.json";
 import Lottie, { Options } from "react-lottie";
 import { Contact } from "../types/types";
 import { FaPlus } from "react-icons/fa6";
-import styles from "./styles/contactlist.module.css";
 import RenderPerson from "./Renderperson";
 import { RiContactsBookFill } from "react-icons/ri";
 
@@ -52,7 +52,7 @@ const ContactList = () => {
   };
 
   return (
-    <div className={`p-4 ${styles.background}`}>
+    <Background>
       <div className="d-flex justify-content-between mb-4">
         <h2 className="d-flex align-items-center gap-2 text-white">
           <RiContactsBookFill /> Contacts
@@ -85,7 +85,7 @@ const ContactList = () => {
           renderWhenEmpty={emptyList}
         />
       </div>
-    </div>
+    </Background>
   );
 };
 

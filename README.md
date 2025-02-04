@@ -24,16 +24,18 @@ A full-stack contacts management system built with Django REST Framework (backen
 ## Tech Stack
 
 **Frontend**
-- React 18
-- React Router 6
+- React 19
+- React Router 7
 - Axios for API calls
 - Bootstrap 5 for styling
+- Flatlist-react for rendering the list of contacts
+- React-icons for icons
+- React-lottie for animations
 
 **Backend**
 - Django 5
 - Django REST Framework
 - SQLite (development)
-- PostgreSQL (production-ready)
 
 ## Prerequisites
 
@@ -46,39 +48,53 @@ A full-stack contacts management system built with Django REST Framework (backen
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/contacts-app.git
-cd contacts-app
+git clone https://github.com/cwashyinc/contact.git
+cd contact
 ```
 
 ### 2. Set Up Backend
 ```bash
 cd backend
+```
 
 # Create virtual environment
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 # Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
 # Run migrations
+```bash
 python manage.py migrate
+```
 
 # Create superuser
+```bash
 python manage.py createsuperuser
+```
 
 # Run development server
+```bash
 python manage.py runserver
 ```
 
 ### 3. Set Up Frontend
 ```bash
-cd ../frontend
+cd ../frontend  
+```
 
 # Install dependencies
+```bash
 npm install
+```
 
 # Start development server
+```bash
 npm start
 ```
 
@@ -125,10 +141,11 @@ npm run build
 ### 2. Configure Django for Production
 ```python
 # settings.py
-DEBUG = False
-ALLOWED_HOSTS = ['yourdomain.com']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'frontend/build/static']
+#backend/.env
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com
 ```
 
 ### 3. Recommended Deployment Platforms
@@ -149,10 +166,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - your.email@example.com
+Similoluwa Odeyemi - similoluwaodeyemi@gmail.com
 
-Project Link: [https://github.com/yourusername/contacts-app](https://github.com/yourusername/contacts-app)
-```
+Project Link: [https://github.com/cwashyinc/contact](https://github.com/cwashyinc/contact)
+
 
 ### Key Sections Explained
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Contact } from "../types/types";
 const API = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export const fetchContacts = async () => {
@@ -12,6 +12,16 @@ export const fetchContacts = async () => {
     throw error;
   }
 };
+
+export const getContactById = async (id: number) => {
+  try {
+    const response = await API.get(`contacts/${id}/`);
+    return response.data;
+  } catch (error: any) {
+    console.log({ error: error});
+  }
+};
+
 export const createContact = async (contact: Contact) => {
   try {
     await API.post("contacts/", contact);

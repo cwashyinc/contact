@@ -16,6 +16,15 @@ def api_contact_list(request):
     serializer = ContactSerializer(contacts, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def contact_detail(request, pk):
+    try:
+        contact = Contact.objects.get(pk=pk)
+        serializer = ContactSerializer(contact)
+        return Response(serializer.data)
+    except Contact.DoesNotExist:
+        return Response(serializer.errors, status=404)
+
 @api_view(['POST'])
 def api_create_contact(request):
     serializer = ContactSerializer(data=request.data)

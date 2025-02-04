@@ -4,6 +4,7 @@ import { GiPencil } from "react-icons/gi";
 import { IoTrashBin } from "react-icons/io5";
 import React from "react";
 import { deleteContact } from "../services/api";
+import styles from "./styles/contactform.module.css";
 
 const RenderPerson = (contact: Contact) => {
   const handleDelete = async (id: number) => {
@@ -14,7 +15,7 @@ const RenderPerson = (contact: Contact) => {
     }
   };
   return (
-    <div className="col-md-4 mb-4" key={contact.id}>
+    <Link to={`/view/${contact.id}`} className={`col-md-4 mb-4 ${styles.pressable}`} key={contact.id}>
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">{contact.name}</h5>
@@ -37,7 +38,7 @@ const RenderPerson = (contact: Contact) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
