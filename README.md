@@ -86,6 +86,70 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+Here's how to update your `README.md` to include testing instructions:
+
+---
+
+### **Testing**
+
+#### **Running Tests**
+To run the test suite, use the following command:
+```bash
+python manage.py test
+```
+
+#### **Test Coverage**
+To check test coverage:
+```bash
+# Install coverage
+pip install coverage
+
+# Run tests with coverage
+coverage run manage.py test
+
+# Generate coverage report
+coverage report
+
+# Generate HTML report
+coverage html
+```
+
+#### **Writing Tests**
+Tests are located in the `contacts/tests/` directory. Follow these guidelines:
+1. **Unit Tests**: Test individual components (models, serializers)
+2. **Integration Tests**: Test API endpoints and views
+3. **End-to-End Tests**: Test complete workflows
+
+#### **Example Test Structure**
+```
+contacts/
+├── tests/
+│   ├── __init__.py
+│   ├── test_models.py       # Model tests
+│   ├── test_views.py        # View tests
+│   └── test_serializers.py  # Serializer tests
+```
+
+#### **Running Specific Tests**
+```bash
+# Run model tests
+python manage.py test contacts.tests.test_models
+
+# Run view tests
+python manage.py test contacts.tests.test_views
+
+# Run a specific test case
+python manage.py test contacts.tests.test_views.ContactAPITest
+```
+
+#### **Test Coverage Goal**
+- Aim for **80-90% coverage**
+- Focus on critical paths and edge cases
+
+---
+
+
+
 # Run development server
 
 ```bash
