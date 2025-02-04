@@ -170,21 +170,3 @@ Similoluwa Odeyemi - similoluwaodeyemi@gmail.com
 
 Project Link: [https://github.com/cwashyinc/contact](https://github.com/cwashyinc/contact)
 
-
-### Key Sections Explained
-
-1. **Features**: Highlights what the app does
-2. **Tech Stack**: Lists technologies used
-3. **Installation**: Step-by-step setup guide
-4. **API Documentation**: Clear endpoint reference
-5. **Deployment**: Production-ready instructions
-6. **Contributing**: Standard open-source guidelines
-
-### Customization Tips
-- Replace `yourusername` with your GitHub username
-- Add a screenshot after creating the app
-- Update contact information
-- Add your license file
-- Include any additional deployment notes
-
-Would you like me to explain any section in more detail or help with the deployment configuration?
