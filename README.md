@@ -86,19 +86,22 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-
 ---
 
 ### **Testing**
 
 #### **Running Tests**
+
 To run the test suite, use the following command:
+
 ```bash
 python manage.py test
 ```
 
 #### **Test Coverage**
+
 To check test coverage:
+
 ```bash
 # Install coverage
 pip install coverage
@@ -113,10 +116,7 @@ coverage report
 coverage html
 ```
 
-
 ---
-
-
 
 # Run development server
 
@@ -153,13 +153,13 @@ npm start
 
 ## API Endpoints
 
-| Method | URL                 | Description        | Body                 |
-| ------ | ------------------- | ------------------ | -------------------- |
-| GET    | /api/contacts/      | List all contacts  | none                 |
+| Method | URL                 | Description        | Body                   |
+| ------ | ------------------- | ------------------ | ---------------------- |
+| GET    | /api/contacts/      | List all contacts  | none                   |
 | POST   | /api/contacts/      | Create new contact | {name, address, phone} |
-| GET    | /api/contacts/{id}/ | Get single contact | none                 |
+| GET    | /api/contacts/{id}/ | Get single contact | none                   |
 | PUT    | /api/contacts/{id}/ | Update contact     | {name, address, phone} |
-| DELETE | /api/contacts/{id}/ | Delete contact     | none                 |
+| DELETE | /api/contacts/{id}/ | Delete contact     | none                   |
 
 ## Environment Variables
 
@@ -201,6 +201,210 @@ ALLOWED_HOSTS=yourdomain.com
 
 - **Backend**: PythonAnywhere, Heroku, AWS Elastic Beanstalk
 - **Frontend**: Vercel, Netlify, or serve through Django
+
+
+### **Deployment on Google Cloud Platform (GCP)**
+
+---
+
+### **1. Prerequisites**
+
+- A GCP account with billing enabled.
+- Google Cloud SDK installed ([Installation Guide](https://cloud.google.com/sdk/docs/install)).
+- Docker installed (for containerizing the Django backend).
+
+---
+
+### **2. Backend (Django) Deployment**
+
+#### **Step 1: Set Up Cloud SQL**
+
+1. Create a PostgreSQL instance:
+   ```bash
+   gcloud sql instances create contacts-db \
+       --database-version=POSTGRES_13 \
+       --tier=db-f1-micro \
+       --region=us-central1
+   ```
+2. Create a database and user:
+
+   ```bash
+   gcloud sql databases create contacts --instance=contacts-db
+   gcloud sql users create contacts-user --instance=contacts-db --password=yourpassword
+   ```
+
+3. Update `settings.py` with Cloud SQL credentials:
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'contacts',
+           'USER': 'contacts-user',
+           'PASSWORD': 'yourpassword',
+           'HOST': '/cloudsql/your-project-id:us-central1:contacts-db',
+           'PORT': '5432',
+       }
+   }
+   ```
+
+#### **Step 2: Containerize the Django App**
+
+1. Create a `Dockerfile` in the `backend` directory:
+
+   ```dockerfile
+   FROM python:3.8-slim
+   WORKDIR /app
+   COPY requirements.txt .
+   RUN pip install -r requirements.txt
+   COPY . .
+   CMD gunicorn contacts_app.wsgi:application --bind 0.0.0.0:8000
+   ```
+
+2. Build the Docker image:
+
+   ```bash
+   docker build -t gcr.io/your-project-id/contacts-backend .
+   ```
+
+3. Push the image to Google Container Registry (GCR):
+   ```bash
+   docker push gcr.io/your-project-id/contacts-backend
+   ```
+
+#### **Step 3: Deploy to Cloud Run**
+
+1. Deploy the container:
+
+   ```bash
+   gcloud run deploy contacts-backend \
+       --image gcr.io/your-project-id/contacts-backend \
+       --platform managed \
+       --region us-central1 \
+       --allow-unauthenticated
+   ```
+
+2. Set environment variables:
+   ```bash
+   gcloud run services update contacts-backend \
+       --set-env-vars SECRET_KEY=your-secret-key,DEBUG=False
+   ```
+
+---
+
+### **3. Frontend (React) Deployment**
+
+#### **Step 1: Build the React App**
+
+1. Build the production version:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+#### **Step 2: Deploy to Firebase Hosting**
+
+1. Install Firebase CLI:
+
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+2. Initialize Firebase:
+
+   ```bash
+   firebase init
+   ```
+
+   - Select **Hosting**.
+   - Choose your Firebase project.
+   - Set the public directory to `build`.
+
+3. Deploy:
+   ```bash
+   firebase deploy
+   ```
+
+---
+
+### **4. Configure Environment Variables**
+
+#### **Backend**
+
+Use GCP Secret Manager for sensitive data:
+
+1. Create a secret:
+
+   ```bash
+   echo -n "your-secret-key" | gcloud secrets create SECRET_KEY --data-file=-
+   ```
+
+2. Access secrets in your app:
+
+   ```python
+   from google.cloud import secretmanager
+
+   def access_secret(secret_id):
+       client = secretmanager.SecretManagerServiceClient()
+       name = f"projects/your-project-id/secrets/{secret_id}/versions/latest"
+       response = client.access_secret_version(name=name)
+       return response.payload.data.decode('UTF-8')
+
+   SECRET_KEY = access_secret('SECRET_KEY')
+   ```
+
+#### **Frontend**
+
+Use `.env.production` for React:
+
+```env
+REACT_APP_API_BASE_URL=https://your-cloud-run-url.com/api
+```
+
+---
+
+### **5. Post-Deployment Steps**
+
+1. **Set Up CI/CD**:
+
+   - Use Cloud Build for automated deployments:
+     ```bash
+     gcloud builds submit --config cloudbuild.yaml
+     ```
+   - Example `cloudbuild.yaml`:
+     ```yaml
+     steps:
+       - name: "gcr.io/cloud-builders/docker"
+         args: ["build", "-t", "gcr.io/your-project-id/contacts-backend", "."]
+       - name: "gcr.io/cloud-builders/docker"
+         args: ["push", "gcr.io/your-project-id/contacts-backend"]
+       - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+         args:
+           [
+             "gcloud",
+             "run",
+             "deploy",
+             "contacts-backend",
+             "--image",
+             "gcr.io/your-project-id/contacts-backend",
+             "--platform",
+             "managed",
+             "--region",
+             "us-central1",
+             "--allow-unauthenticated",
+           ]
+     ```
+
+2. **Enable HTTPS**:
+
+   - Firebase Hosting and Cloud Run automatically provide HTTPS.
+
+
+---
+
+### **6. Access the Application**
+
+- **Backend API**: `https://your-cloud-run-url.com/api`
+- **Frontend**: `https://your-firebase-url.com`
 
 
 ## License
