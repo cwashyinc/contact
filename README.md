@@ -123,9 +123,9 @@ npm start
 | Method | URL                 | Description        | Body                 |
 | ------ | ------------------- | ------------------ | -------------------- |
 | GET    | /api/contacts/      | List all contacts  | none                 |
-| POST   | /api/contacts/      | Create new contact | {name, email, phone} |
+| POST   | /api/contacts/      | Create new contact | {name, address, phone} |
 | GET    | /api/contacts/{id}/ | Get single contact | none                 |
-| PUT    | /api/contacts/{id}/ | Update contact     | {name, email, phone} |
+| PUT    | /api/contacts/{id}/ | Update contact     | {name, address, phone} |
 | DELETE | /api/contacts/{id}/ | Delete contact     | none                 |
 
 ## Environment Variables
