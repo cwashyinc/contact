@@ -194,9 +194,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #backend/.env
 DEBUG=False
-ALLOWED_HOSTS=yourdomain.com
 SECRET_KEY='your-secret-key'
-ALLOWED_HOSTS=localhost,127.0.0.1,etc.
+ALLOWED_HOSTS=localhost,127.0.0.1,yourdomain.com,etc.
 DB_NAME=your-db-name
 
 CORS_ALLOWED_ORIGINS=yourdomain.com
@@ -250,7 +249,7 @@ python manage.py collectstatic --noinput
    gcloud sql users create your-db-user --instance=your-db-name --password=your-db-password
    ```
 
-3. Update `settings.py` with Cloud SQL credentials:
+3. Update `settings_production.py` with Cloud SQL credentials:
    ```python
    DATABASES = {
        'default': {
