@@ -208,6 +208,12 @@ PROD_DB_HOST='/cloudsql/your-project-id:your-region:your-db-name'
 PROD_DB_PORT=your-db-port
 ```
 
+#### Generate static files
+
+```bash
+python manage.py collectstatic --noinput
+```
+
 ### 3. Recommended Deployment Platforms
 
 - **Backend**: PythonAnywhere, Heroku, AWS Elastic Beanstalk, GCP
