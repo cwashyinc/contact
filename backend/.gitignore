@@ -3,3 +3,4 @@ line.txt
 cloudbuild.yaml
 staticfiles/
 *.sqlite3
+db.sqlite3
