@@ -96,19 +96,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'test_db.sqlite3',
     },
+
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'contacts_db',
-        'USER': 'contacts_user',
-        'PASSWORD': os.getenv("PROD_DB_PASS"),
-        'HOST': '127.0.0.1',
-        'PORT': os.getenv("PROD_DB_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'HOST': '34.89.6.62'
     },
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    #     'HOST': '34.89.6.62'
-    # },
 }
 
 # Password validation
