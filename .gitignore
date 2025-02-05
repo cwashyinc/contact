@@ -1,5 +1,6 @@
 *.pyc
 backend/*.pyc
+backend/contacts/migrations/
 __pycache__/
 .env
 backend/.env
@@ -9,3 +10,6 @@ frontend/.firebase
 __pycache__/
 *.pyc
 
+
+frontend/.firebaserc
+frontend/.firebase
