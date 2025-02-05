@@ -1,1 +1,5 @@
 .env
+line.txt
+cloudbuild.yaml
+staticfiles/
+*.sqlite3

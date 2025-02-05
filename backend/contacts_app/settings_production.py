@@ -41,14 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contacts.apps.ContactsConfig',  # Add this line
-    'rest_framework',  # Add this if using DRF
+    'contacts.apps.ContactsConfig',
+    'rest_framework',
     'corsheaders',
     'drf_yasg',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -96,12 +97,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'test_db.sqlite3',
     },
-
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'HOST': '34.89.6.62'
-    },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("PROD_DB_NAME"),  # Replace with your actual DB name
+        'USER': os.getenv("PROD_DB_USER"),  # Or your actual DB user
+        'PASSWORD': os.getenv("PROD_DB_PASSWORD"),  # Replace with your password
+        'HOST': os.getenv("PROD_DB_HOST"),  # Replace with your actual instance connection name
+        'PORT': os.getenv("PROD_DB_PORT"),
+    }
 }
 
 # Password validation
@@ -140,6 +143,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Optionally enable compression and caching:
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
