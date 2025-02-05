@@ -1,7 +1,11 @@
 *.pyc
+backend/*.pyc
 __pycache__/
 .env
 backend/.env
 frontend/.env
 frontend/.firebaserc
 frontend/.firebase
+__pycache__/
+*.pyc
+
