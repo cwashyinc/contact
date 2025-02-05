@@ -189,7 +189,7 @@ npm run build
 ### 2. Configure Django for Production
 
 ```python
-# settings.py
+# settings_production.py
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #backend/.env
