@@ -190,16 +190,27 @@ npm run build
 
 ```python
 # settings.py
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'frontend/build/static']
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #backend/.env
 DEBUG=False
 ALLOWED_HOSTS=yourdomain.com
+SECRET_KEY='your-secret-key'
+ALLOWED_HOSTS=localhost,127.0.0.1,etc.
+DB_NAME=your-db-name
+
+CORS_ALLOWED_ORIGINS=yourdomain.com
+
+PROD_DB_NAME=your-db-name
+PROD_DB_USER=your-db-user
+PROD_DB_PASSWORD=your-db-password
+PROD_DB_HOST='/cloudsql/your-project-id:your-region:your-db-name'
+PROD_DB_PORT=your-db-port
 ```
 
 ### 3. Recommended Deployment Platforms
 
-- **Backend**: PythonAnywhere, Heroku, AWS Elastic Beanstalk
+- **Backend**: PythonAnywhere, Heroku, AWS Elastic Beanstalk, GCP
 - **Frontend**: Vercel, Netlify, or serve through Django
 
 
@@ -224,13 +235,13 @@ ALLOWED_HOSTS=yourdomain.com
    gcloud sql instances create contacts-db \
        --database-version=POSTGRES_13 \
        --tier=db-f1-micro \
-       --region=us-central1
+       --region=europe-west2
    ```
 2. Create a database and user:
 
    ```bash
-   gcloud sql databases create contacts --instance=contacts-db
-   gcloud sql users create contacts-user --instance=contacts-db --password=yourpassword
+   gcloud sql databases create contacts --instance=your-db-name
+   gcloud sql users create your-db-user --instance=your-db-name --password=your-db-password
    ```
 
 3. Update `settings.py` with Cloud SQL credentials:
@@ -238,11 +249,11 @@ ALLOWED_HOSTS=yourdomain.com
    DATABASES = {
        'default': {
            'ENGINE': 'django.db.backends.postgresql',
-           'NAME': 'contacts',
-           'USER': 'contacts-user',
-           'PASSWORD': 'yourpassword',
-           'HOST': '/cloudsql/your-project-id:us-central1:contacts-db',
-           'PORT': '5432',
+           'NAME': 'your-db-name',
+           'USER': 'your-db-user',
+           'PASSWORD': 'your-db-password',
+           'HOST': '/cloudsql/your-project-id:your-region:your-db-name',
+           'PORT': 'your-db-port',
        }
    }
    ```
@@ -257,6 +268,7 @@ ALLOWED_HOSTS=yourdomain.com
    COPY requirements.txt .
    RUN pip install -r requirements.txt
    COPY . .
+   CMD ["python", "manage.py", "migrate"]
    CMD gunicorn contacts_app.wsgi:application --bind 0.0.0.0:8000
    ```
 
@@ -277,16 +289,24 @@ ALLOWED_HOSTS=yourdomain.com
 
    ```bash
    gcloud run deploy contacts-backend \
-       --image gcr.io/your-project-id/contacts-backend \
-       --platform managed \
-       --region us-central1 \
-       --allow-unauthenticated
+    --image gcr.io/your-project-id/contacts-backend \
+    --platform managed \
+    --region [YOUR-REGION] \
+    --allow-unauthenticated
    ```
 
 2. Set environment variables:
    ```bash
    gcloud run services update contacts-backend \
-       --set-env-vars SECRET_KEY=your-secret-key,DEBUG=False
+      --set-env-vars "DJANGO_SETTINGS_MODULE=contacts_app.settings_production" \
+      --set-env-vars "SECRET_KEY='[YOUR-SECRET-KEY]'" \
+      --set-env-vars "DEBUG=False" \
+      --set-env-vars "PROD_DB_PASSWORD=[YOUR-DB-PASSWORD]" \
+      --set-env-vars "CORS_ALLOWED_ORIGINS=[YOUR-ALLOWED-ORIGINS]" \
+      --set-env-vars "PROD_DB_HOST='/cloudsql/[YOUR-PROJECT-ID]:[REGION]:[DB-NAME]'" \
+      --set-env-vars "PROD_DB_PORT=[YOUR-DB-PORT (e.g. 5432)]" \
+      --set-env-vars "PROD_DB_NAME=[YOUR-DB-NAME]" \
+      --set-env-vars "PROD_DB_USER=[YOUR-DB-USER]"
    ```
 
 ---
@@ -328,29 +348,6 @@ ALLOWED_HOSTS=yourdomain.com
 
 ### **4. Configure Environment Variables**
 
-#### **Backend**
-
-Use GCP Secret Manager for sensitive data:
-
-1. Create a secret:
-
-   ```bash
-   echo -n "your-secret-key" | gcloud secrets create SECRET_KEY --data-file=-
-   ```
-
-2. Access secrets in your app:
-
-   ```python
-   from google.cloud import secretmanager
-
-   def access_secret(secret_id):
-       client = secretmanager.SecretManagerServiceClient()
-       name = f"projects/your-project-id/secrets/{secret_id}/versions/latest"
-       response = client.access_secret_version(name=name)
-       return response.payload.data.decode('UTF-8')
-
-   SECRET_KEY = access_secret('SECRET_KEY')
-   ```
 
 #### **Frontend**
 
@@ -362,46 +359,8 @@ REACT_APP_API_BASE_URL=https://your-cloud-run-url.com/api
 
 ---
 
-### **5. Post-Deployment Steps**
 
-1. **Set Up CI/CD**:
-
-   - Use Cloud Build for automated deployments:
-     ```bash
-     gcloud builds submit --config cloudbuild.yaml
-     ```
-   - Example `cloudbuild.yaml`:
-     ```yaml
-     steps:
-       - name: "gcr.io/cloud-builders/docker"
-         args: ["build", "-t", "gcr.io/your-project-id/contacts-backend", "."]
-       - name: "gcr.io/cloud-builders/docker"
-         args: ["push", "gcr.io/your-project-id/contacts-backend"]
-       - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-         args:
-           [
-             "gcloud",
-             "run",
-             "deploy",
-             "contacts-backend",
-             "--image",
-             "gcr.io/your-project-id/contacts-backend",
-             "--platform",
-             "managed",
-             "--region",
-             "us-central1",
-             "--allow-unauthenticated",
-           ]
-     ```
-
-2. **Enable HTTPS**:
-
-   - Firebase Hosting and Cloud Run automatically provide HTTPS.
-
-
----
-
-### **6. Access the Application**
+### **5. Access the Application**
 
 - **Backend API**: `https://your-cloud-run-url.com/api`
 - **Frontend**: `https://your-firebase-url.com`
