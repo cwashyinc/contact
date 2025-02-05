@@ -1,6 +1,7 @@
 # Contacts Application
 
 A full-stack contacts management system built with Django REST Framework (backend) and React (frontend).
+Frontend is hosted on Firebase on (https://contact-web-app202502.web.app/)
 
 ![alt text](https://github.com/cwashyinc/contact-priv/blob/main/frontend/screenshot.png)
 
