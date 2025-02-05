@@ -10,6 +10,7 @@ frontend/.firebase
 __pycache__/
 *.pyc
 
+backend/line.txt
 
 frontend/.firebaserc
 frontend/.firebase
